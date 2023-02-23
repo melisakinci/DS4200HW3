@@ -12,10 +12,6 @@ extract data from mongo --> use PyMongo to make that visualization, matplotlib, 
 #result of query
 
 from pymongo import MongoClient
-from datetime import datetime
-from pprint import pprint
-import random as rnd
-import time
 
 #connecting to the Mongo
 client = MongoClient()
@@ -23,8 +19,8 @@ db = client.HW4
 
 
 #query 1 - basic
-#what are the first 10 names of all the restaurants in the Bronx
-result = db.Restaurant.distinct("name", {"borough": "Bronx"})
+#How many restaurants are in the collection
+result = db.Restaurant.count_documents({})
 #print(result)
 
 
@@ -71,6 +67,18 @@ count = db.Restaurant.count_documents({"borough": "Manhattan", "cuisine": "Itali
 #print(count)
 
 
+#query 8 - intermediate
+#What are the 5 most common cuisine types in Manhattan and their respective counts?
+manhattan_cuisine_counts = db.Restaurant.aggregate([
+    {"$match": {"borough": "Manhattan"}},
+    {"$group": {"_id": "$cuisine", "count": {"$sum": 1}}},
+    {"$sort": {"count": -1}},
+    {"$limit": 5}
+])
+for cuisine_count in manhattan_cuisine_counts:
+    print(cuisine_count)
+
+
 
 #query 9 - hard
 #what are the top 10 restaurants with the highest average grade scores for all their grades?
@@ -86,7 +94,7 @@ top_restaurants = db.Restaurant.aggregate([
     {"$limit": 10}
 ])
 #for restaurant in top_restaurants:
-   # print(restaurant)
+   #print(restaurant)
 
 
 
@@ -99,5 +107,5 @@ manhattan_cuisine_counts = db.Restaurant.aggregate([
     {"$sort": {"count": -1}},
     {"$limit": 5}
 ])
-for cuisine_count in manhattan_cuisine_counts:
-    print(cuisine_count)
+#for cuisine_count in manhattan_cuisine_counts:
+    #print(cuisine_count)
