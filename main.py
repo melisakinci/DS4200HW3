@@ -99,28 +99,30 @@ top_restaurants = db.Restaurant.aggregate([
 ])
 
 df_top_restaurants = pd.DataFrame(columns=["name", "cuisine", "average_score"])
+
 for restaurant in top_restaurants:
+    print(restaurant)
+    # add each restaurant to the dataframe
     df_top_restaurants.loc[len(df_top_restaurants.index)] = \
         [restaurant['name'], restaurant['cuisine'], restaurant['average_score']]
-    # print(restaurant)
-fig = plt.figure(figsize=(10,6))
 
+# create the seaborn barplot and set parameters
+fig = plt.figure(figsize=(10, 6))
 ax = sns.barplot(data=df_top_restaurants,
-            y= df_top_restaurants['name'],
-            x=df_top_restaurants['average_score'],
-            hue=df_top_restaurants['cuisine'],
-            width=.5,
-            dodge=False,
-            orient='h')
+                 y=df_top_restaurants['name'],
+                 x=df_top_restaurants['average_score'],
+                 hue=df_top_restaurants['cuisine'],
+                 width=.5,
+                 dodge=False,
+                 orient='h')
 fig.subplots_adjust(top=.95)
 
-plt.legend(bbox_to_anchor=(.78, 0.35), loc='upper left', title="cuisine",borderaxespad=0)
-
-# creating the bar plot
+# adding labels and fixing placement
+plt.legend(bbox_to_anchor=(.78, 0.35), loc='upper left', title="cuisine", borderaxespad=0)
 plt.ylabel("Restaurant")
 plt.xlabel("Average rating")
 plt.title("Top Restaurants in Manhattan")
-plt.show()
+# plt.show()
 
 # query 10 - hard
 # what are the 5 most common cuisine types in Manhattan and their respective counts?
