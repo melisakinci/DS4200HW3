@@ -122,7 +122,7 @@ plt.legend(bbox_to_anchor=(.78, 0.35), loc='upper left', title="cuisine", border
 plt.ylabel("Restaurant")
 plt.xlabel("Average rating")
 plt.title("Top Restaurants in Manhattan")
-# plt.show()
+plt.show()
 
 # query 10 - hard
 # what are the 5 most common cuisine types in Manhattan and their respective counts?
